@@ -117,6 +117,31 @@
           }
         }
       }
+    },
+    "vni-liquidity": {
+      "projectType": "library",
+      "root": "libs/vni-liquidity",
+      "sourceRoot": "libs/vni-liquidity/src",
+      "prefix": "abc",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/vni-liquidity"],
+          "options": {
+            "jestConfig": "libs/vni-liquidity/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/vni-liquidity/src/**/*.ts",
+              "libs/vni-liquidity/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
