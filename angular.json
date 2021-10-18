@@ -6,6 +6,7 @@
       "root": "apps/todos",
       "sourceRoot": "apps/todos/src",
       "prefix": "abc",
+      "aot": false,
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -17,7 +18,15 @@
             "polyfills": "apps/todos/src/polyfills.ts",
             "tsConfig": "apps/todos/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/todos/src/favicon.ico", "apps/todos/src/assets"],
+            "assets": [
+              "apps/todos/src/favicon.ico",
+              "apps/todos/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./libs/vni-liquidity/assets/data/vnd-web/",
+                "output": "/assets/"
+              }
+            ],
             "styles": ["apps/todos/src/styles.scss"],
             "scripts": []
           },
@@ -114,6 +123,31 @@
           "outputs": ["{options.outputFile}"],
           "options": {
             "lintFilePatterns": ["apps/todos-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "ui-web": {
+      "projectType": "library",
+      "root": "libs/ui-web",
+      "sourceRoot": "libs/ui-web/src",
+      "prefix": "abc",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-web"],
+          "options": {
+            "jestConfig": "libs/ui-web/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-web/src/**/*.ts",
+              "libs/ui-web/src/**/*.html"
+            ]
           }
         }
       }

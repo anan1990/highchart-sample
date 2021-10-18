@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  mkwSocket: 'https://mkw-socket.vndirect.com.vn',
+  liquidity: 'https://mkw-socket.vndirect.com.vn/mkwsocket/liquidity',
 };
 
 /*
