@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@abc/ui-sample": ["libs/ui-sample/src/index.ts"],
       "@abc/ui-web": ["libs/ui-web/src/index.ts"],
       "@abc/vni-liquidity": ["libs/vni-liquidity/src/index.ts"]
     }

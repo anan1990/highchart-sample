@@ -12,6 +12,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('@abc/vni-liquidity').then((m) => m.VniLiquidityModule),
   },
+  {
+    path: 'sample',
+    loadChildren: () =>
+      import('@abc/ui-sample').then((m) => m.UiSampleModule),
+  },
+
 ];
 
 @NgModule({

@@ -127,6 +127,31 @@
         }
       }
     },
+    "ui-sample": {
+      "projectType": "library",
+      "root": "libs/ui-sample",
+      "sourceRoot": "libs/ui-sample/src",
+      "prefix": "abc",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/ui-sample"],
+          "options": {
+            "jestConfig": "libs/ui-sample/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/ui-sample/src/**/*.ts",
+              "libs/ui-sample/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "ui-web": {
       "projectType": "library",
       "root": "libs/ui-web",
