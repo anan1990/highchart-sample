@@ -1,18 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { io } from 'socket.io-client';
+import * as io from 'socket.io-client';
 
 @Injectable()
 export class WebsocketService {
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
-  constructor() {
-    
-  }
+  constructor() {}
 
   public getNewMessage = () => {
     const socket = io('https://mkw-socket.vndirect.com.vn/socket.io', {
-      transports : ['websocket'],
+      transports: ['websocket'],
       query: {
         chart: 'liquidity',
       },
@@ -20,13 +18,11 @@ export class WebsocketService {
     socket.on('connect', function () {
       console.log('Socket Connected');
     });
-    socket.on('data', (message) => {
-      console.log('Socket data');
-      this.message$.next(message);
-    });
+    // socket.on('data', (message) => {
+    //   console.log('Socket data');
+    //   this.message$.next(message);
+    // });
 
     return this.message$.asObservable();
   };
-
-
 }

@@ -7,23 +7,18 @@ import { MarketTradingData } from '../model/liquidity.model';
 @Component({
   selector: 'abc-trading-volume',
   templateUrl: './trading-volume.component.html',
-  styleUrls: ['./trading-volume.component.scss']
+  styleUrls: ['./trading-volume.component.scss'],
 })
 export class TradingVolumeComponent implements OnInit {
-  data: number[] = [];
+  todayVolume: number[] = [];
+  previousVolume: number[] = [];
   updateFromInput: boolean = false;
   Highcharts: typeof Highcharts = Highcharts;
   chartCallback: any;
-  chart : any;
+  chart: any;
   chartOptions: Highcharts.Options = {
     title: {
-      text: 'US and USSR nuclear stockpiles',
-    },
-    subtitle: {
-      text:
-        'Sources: <a href="https://thebulletin.org/2006/july/global-nuclear-stockpiles-1945-2006">' +
-        'thebulletin.org</a> &amp; <a href="https://www.armscontrol.org/factsheets/Nuclearweaponswhohaswhat">' +
-        'armscontrol.org</a>',
+      text: '',
     },
     xAxis: {
       allowDecimals: false,
@@ -39,7 +34,7 @@ export class TradingVolumeComponent implements OnInit {
     },
     yAxis: {
       title: {
-        text: 'Nuclear weapon states',
+        text: 'Trading value (bil. VND)',
       },
       // labels: {
       //   formatter: function () {
@@ -49,11 +44,16 @@ export class TradingVolumeComponent implements OnInit {
     },
     series: [
       {
-        // data: [19.033, 21.889, 21.889, 70.522, 70.522, 70.522, 312.0427768899999, 315.0427768899999],
-        data: this.data,
+        data: this.todayVolume,
         type: 'area',
-        // color: '#abc431',
-        name: 'An An',
+        color: '#abc431',
+        name: 'Today trading value',
+      },
+      {
+        data: this.previousVolume,
+        type: 'area',
+        color: '#123dfe',
+        name: 'Previous trading value',
       },
     ],
   };
@@ -72,28 +72,42 @@ export class TradingVolumeComponent implements OnInit {
   ngOnInit() {
     // this.socketService.getNewMessage().subscribe((message: string) => {
     //   this.messageList.push(message);
-    //   console.log('---'+ JSON.stringify(this.messageList));
+    //   console.log('---' + JSON.stringify(this.messageList));
     // });
     // this.chart.showLoading();
     this.liquidityService
       .getTradingVolume('VNINDEX')
       .subscribe((result: MarketTradingData[]) => {
-        this.data = result.map((dt) => {
+        this.todayVolume = result.map((dt) => {
           return dt.value;
         });
         this.updateFromInput = true;
-        this.updateData(this.data);
+        this.updateData(this.todayVolume, this.previousVolume);
+      });
+
+    this.liquidityService
+      .getPreTradingVolume('VNINDEX')
+      .subscribe((result: MarketTradingData[]) => {
+        this.previousVolume = result.map((dt) => {
+          return dt.value;
+        });
+        this.updateFromInput = true;
+        this.updateData(this.todayVolume, this.previousVolume);
       });
   }
 
-  updateData(data : any) {
+  updateData(today: number[], previousDay: number[]) {
     this.chartOptions.series = [
       {
-        data: data,
+        data: today,
         type: 'area',
-        // color: '#abc431',
-        name: 'An An',
-      }
+        name: 'Today trading value',
+      },
+      {
+        data: previousDay,
+        type: 'area',
+        name: 'Today trading value',
+      },
     ];
 
     this.updateFromInput = true;

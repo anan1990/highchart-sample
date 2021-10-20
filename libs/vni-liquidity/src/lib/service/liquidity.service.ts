@@ -3,26 +3,46 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { MarketLiquidity, MarketTradingData } from '../model/liquidity.model';
+import { environment } from '../../../../../apps/todos/src/environments/environment';
 @Injectable()
 export class LiquidityService {
   constructor(private http: HttpClient) {}
-  assetData='assets/';
+  assetData = 'assets/';
 
   getTradingVolume(index: string): Observable<MarketTradingData[]> {
     // return this.http
     //   .get<MarketLiquidity>(environment.liquidity + `?index=${index}`)
     //   .pipe(
-    //       map((marketLiquidity: MarketLiquidity)=>{
-    //         return marketLiquidity.data;
-    //       }),
-    //    catchError(this.handleError));
+    //     map((marketLiquidity: MarketLiquidity) => {
+    //       return marketLiquidity.data;
+    //     }),
+    //     catchError(this.handleError)
+    //   );
+    return this.http.get<MarketLiquidity>(this.assetData + `data.json`).pipe(
+      map((marketLiquidity: MarketLiquidity) => {
+        return marketLiquidity.data;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getPreTradingVolume(index: string): Observable<MarketTradingData[]> {
+    // return this.http
+    //   .get<MarketLiquidity>(environment.liquidity + `?index=${index}`)
+    //   .pipe(
+    //     map((marketLiquidity: MarketLiquidity) => {
+    //       return marketLiquidity.data;
+    //     }),
+    //     catchError(this.handleError)
+    //   );
     return this.http
-      .get<MarketLiquidity>(this.assetData + `data.json`)
+      .get<MarketLiquidity>(this.assetData + `data-pre.json`)
       .pipe(
-          map((marketLiquidity: MarketLiquidity)=>{
-            return marketLiquidity.data;
-          }),
-       catchError(this.handleError));
+        map((marketLiquidity: MarketLiquidity) => {
+          return marketLiquidity.data;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   // Error handling
