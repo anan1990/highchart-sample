@@ -8,6 +8,8 @@ function Liquidity(opt) {
 // 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
 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
 
+new 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
+
 Liquidity.prototype.init = function () {
   console.log('Init chart');
   var index = getUrlParameter('index');
