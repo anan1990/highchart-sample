@@ -10,20 +10,20 @@ export class LiquidityService {
   assetData = 'assets/';
 
   getTradingVolume(index: string): Observable<MarketTradingData[]> {
-    // return this.http
-    //   .get<MarketLiquidity>(environment.liquidity + `?index=${index}`)
-    //   .pipe(
-    //     map((marketLiquidity: MarketLiquidity) => {
-    //       return marketLiquidity.data;
-    //     }),
-    //     catchError(this.handleError)
-    //   );
-    return this.http.get<MarketLiquidity>(this.assetData + `data.json`).pipe(
-      map((marketLiquidity: MarketLiquidity) => {
-        return marketLiquidity.data;
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<MarketLiquidity>(environment.liquidity + `?index=${index}`)
+      .pipe(
+        map((marketLiquidity: MarketLiquidity) => {
+          return marketLiquidity.data;
+        }),
+        catchError(this.handleError)
+      );
+    // return this.http.get<MarketLiquidity>(this.assetData + `data.json`).pipe(
+    //   map((marketLiquidity: MarketLiquidity) => {
+    //     return marketLiquidity.data;
+    //   }),
+    //   catchError(this.handleError)
+    // );
   }
 
   getPreTradingVolume(index: string): Observable<MarketTradingData[]> {

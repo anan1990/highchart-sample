@@ -14,7 +14,9 @@ export class LineChartComponent implements OnInit {
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'line',
+      
     },
+    
     title: {
       text: 'Solar Employment Growth by Sector, 2010-2016',
     },
@@ -42,6 +44,11 @@ export class LineChartComponent implements OnInit {
     // },
 
     plotOptions: {
+      line:{
+        dataLabels:{
+          enabled: true
+        }
+      },
       series: {
         label: {
           connectorAllowed: false,
@@ -54,6 +61,7 @@ export class LineChartComponent implements OnInit {
       {
         type: 'line',
         name: 'Installation',
+
         data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175],
       },
       {
