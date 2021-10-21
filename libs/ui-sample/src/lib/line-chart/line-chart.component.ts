@@ -4,13 +4,13 @@ import HC_exporting from 'highcharts/modules/exporting';
 HC_exporting(Highcharts);
 
 @Component({
-  selector: 'abc-ui-sample1',
-  templateUrl: './ui-sample1.component.html',
-  styleUrls: ['./ui-sample1.component.scss'],
+  selector: 'abc-line-chart',
+  templateUrl: './line-chart.component.html',
+  styleUrls: ['./line-chart.component.scss'],
 })
-export class UiSample1Component implements OnInit {
+export class LineChartComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
-  
+
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'line',
