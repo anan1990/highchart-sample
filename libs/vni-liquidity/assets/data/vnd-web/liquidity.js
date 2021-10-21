@@ -5,6 +5,7 @@ function Liquidity(opt) {
   this.init();
 }
 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;
+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
 
 Liquidity.prototype.init = function () {
   console.log('Init chart');
