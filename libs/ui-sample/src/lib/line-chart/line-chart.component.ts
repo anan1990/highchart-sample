@@ -14,9 +14,8 @@ export class LineChartComponent implements OnInit {
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'line',
-      
     },
-    
+
     title: {
       text: 'Solar Employment Growth by Sector, 2010-2016',
     },
@@ -36,6 +35,11 @@ export class LineChartComponent implements OnInit {
         rangeDescription: 'Range: 2010 to 2017',
       },
     },
+    tooltip: {
+      shared: true,
+      valueSuffix: '°C',
+      xDateFormat: '%A, %b %e',
+    },
 
     // legend: {
     //   layout: 'vertical',
@@ -44,10 +48,10 @@ export class LineChartComponent implements OnInit {
     // },
 
     plotOptions: {
-      line:{
-        dataLabels:{
-          enabled: true
-        }
+      line: {
+        dataLabels: {
+          enabled: true,
+        },
       },
       series: {
         label: {
@@ -61,7 +65,7 @@ export class LineChartComponent implements OnInit {
       {
         type: 'line',
         name: 'Installation',
-
+        color: '#fe33ed',
         data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175],
       },
       {
@@ -103,7 +107,9 @@ export class LineChartComponent implements OnInit {
       ],
     },
   };
-  constructor() {}
+  constructor() {
+    
+  }
 
   ngOnInit(): void {}
 }
