@@ -2,10 +2,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as io from 'socket.io-client';
+import { MarketTradingData } from '../model/liquidity.model';
 
 @Injectable()
 export class WebsocketService {
-  public message$: BehaviorSubject<string> = new BehaviorSubject('');
+  public message$: BehaviorSubject<Array<MarketTradingData>> = new BehaviorSubject<MarketTradingData[]>([]);;
   constructor() {}
 
   public getNewMessage = () => {
@@ -18,10 +19,10 @@ export class WebsocketService {
     socket.on('connect', function () {
       console.log('Socket Connected');
     });
-    // socket.on('data', (message) => {
-    //   console.log('Socket data');
-    //   this.message$.next(message);
-    // });
+    socket.on('data', (message: MarketTradingData[]) => {
+      console.log('Socket data');
+      this.message$.next(message);
+    });
 
     return this.message$.asObservable();
   };

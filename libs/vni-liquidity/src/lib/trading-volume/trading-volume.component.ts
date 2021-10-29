@@ -3,6 +3,8 @@ import { LiquidityService } from '../service/liquidity.service';
 import { WebsocketService } from '../service/socketio.service';
 import * as Highcharts from 'highcharts';
 import { MarketTradingData } from '../model/liquidity.model';
+import { timer } from 'rxjs';
+import { takeUntil, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'abc-trading-volume',
@@ -12,10 +14,12 @@ import { MarketTradingData } from '../model/liquidity.model';
 export class TradingVolumeComponent implements OnInit {
   todayVolume: number[] = [];
   previousVolume: number[] = [];
-  updateFromInput: boolean = false;
+  updateFromInput = false;
   Highcharts: typeof Highcharts = Highcharts;
   chartCallback: any;
   chart: any;
+  realtimeData: number[] = [];
+  isUpdateChart = true;
   chartOptions: Highcharts.Options = {
     title: {
       text: '',
@@ -44,16 +48,16 @@ export class TradingVolumeComponent implements OnInit {
     },
     series: [
       {
-        data: this.todayVolume,
-        type: 'area',
-        color: '#abc431',
-        name: 'Today trading value',
-      },
-      {
         data: this.previousVolume,
         type: 'area',
-        color: '#123dfe',
+        color: '#808285',
         name: 'Previous trading value',
+      },
+      {
+        data: this.todayVolume,
+        type: 'area',
+        color: '#f7941f',
+        name: 'Today trading value',
       },
     ],
   };
@@ -70,10 +74,23 @@ export class TradingVolumeComponent implements OnInit {
   }
   messageList: string[] = [];
   ngOnInit() {
-    // this.socketService.getNewMessage().subscribe((message: string) => {
-    //   this.messageList.push(message);
-    //   console.log('---' + JSON.stringify(this.messageList));
-    // });
+    this.socketService
+      .getNewMessage()
+      .subscribe((message: MarketTradingData[]) => {
+        // this.messageList = [...message];
+        console.log('---' + JSON.stringify(message));
+        let tmp = message.map((m) => {
+          if (m.index == 'VNINDEX') {
+            return m.value;
+          } else {
+            return 0;
+          }
+        });
+        tmp = tmp.filter((t) => {
+          return t != 0;
+        });
+        this.realtimeData = [...this.realtimeData, ...tmp];
+      });
     // this.chart.showLoading();
     this.liquidityService
       .getTradingVolume('VNINDEX')
@@ -82,36 +99,51 @@ export class TradingVolumeComponent implements OnInit {
           return dt.value;
         });
         this.updateFromInput = true;
-        this.updateData(this.todayVolume, this.previousVolume);
+        this.updateData(this.previousVolume, this.todayVolume);
       });
 
     this.liquidityService
-      .getPreTradingVolume('VNINDEX')
+      .getTradingVolume('PRE-VNINDEX')
       .subscribe((result: MarketTradingData[]) => {
         this.previousVolume = result.map((dt) => {
           return dt.value;
         });
+        // this.previousVolume = [];
         this.updateFromInput = true;
-        this.updateData(this.todayVolume, this.previousVolume);
+        this.updateData(this.previousVolume, this.todayVolume);
       });
+    this.updateRealtimeDate();
   }
 
-  updateData(today: number[], previousDay: number[]) {
+  updateRealtimeDate() {
+    timer(3000, 15000).subscribe(() => {
+      console.log('updateRealtimeDate: ', this.realtimeData);
+      if (this.realtimeData.length > 0) {
+        this.todayVolume = [...this.todayVolume, ...this.realtimeData];
+        this.updateData(this.previousVolume, this.todayVolume);
+      }
+      this.realtimeData = [];
+    });
+  }
+
+  updateData(previousDay: number[], today: number[]) {
+    console.log('today', today.length);
     this.chartOptions.series = [
       {
-        data: today,
+        data: previousDay,
         type: 'area',
-        name: 'Today trading value',
+        name: 'Previous trading value',
       },
       {
-        data: previousDay,
+        data: today,
+        color: '#f7941f',
         type: 'area',
         name: 'Today trading value',
       },
     ];
 
     this.updateFromInput = true;
-    this.chart.hideLoading();
+    // this.chart.hideLoading();
   }
 
   onUpdateData() {
