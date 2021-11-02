@@ -100,6 +100,12 @@ export class AreaRangeComponent implements OnInit {
 
     xAxis: {
       type: 'datetime',
+      plotLines:[{
+        color:'red',
+        dashStyle:'LongDashDot',
+        value: 3, // Value of where the line will appear
+        width: 2 // Width of the line    
+      }]
     },
 
     plotOptions: {

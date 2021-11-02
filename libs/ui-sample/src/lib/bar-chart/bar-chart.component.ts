@@ -10,6 +10,9 @@ export class BarChartComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
 
   chartOptions: Highcharts.Options = {
+    scrollbar: {
+      enabled: true,
+    },
     chart: {
       backgroundColor: {
         // linearGradient: [0, 0, 500, 500],
@@ -30,18 +33,32 @@ export class BarChartComponent implements OnInit {
     },
     xAxis: {
       categories: ['Apples', 'Bananas', 'Oranges'],
+      gridLineWidth: 0
     },
     yAxis: {
       title: {
         text: 'Fruit eaten',
       },
+      gridLineWidth: 0
     },
 
     legend: {
       layout: 'vertical',
       align: 'left',
       verticalAlign: 'middle',
-      enabled: false,
+      enabled: true,
+      bubbleLegend: {
+        enabled: true,
+        ranges: [
+          {
+            value: 14,
+          },
+          {
+            value: 89,
+          },
+        ],
+      },
+      margin: 50,
     },
 
     plotOptions: {

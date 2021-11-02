@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
-HC_exporting(Highcharts);
+// HC_exporting(Highcharts);
 
 @Component({
   selector: 'abc-line-chart',
@@ -27,7 +27,7 @@ export class LineChartComponent implements OnInit {
     yAxis: {
       title: {
         text: 'Number of Employees',
-      },
+      }
     },
 
     xAxis: {
@@ -35,11 +35,11 @@ export class LineChartComponent implements OnInit {
         rangeDescription: 'Range: 2010 to 2017',
       },
     },
-    tooltip: {
-      shared: true,
-      valueSuffix: '°C',
-      xDateFormat: '%A, %b %e',
-    },
+    // tooltip: {
+    //   shared: true,
+    //   valueSuffix: '°C',
+    //   xDateFormat: '%A, %b %e',
+    // },
 
     // legend: {
     //   layout: 'vertical',
